@@ -5,7 +5,7 @@ import { getDates } from '../helpers/getDates';
 
 class skepppsbron {
     constructor() {
-        this.testDays = getDates(new Date(), new Date(endOfMonth(new Date())))
+        this.testDays = getDates(new Date(), endOfMonth(new Date()))
         this.testClosedDays = this.testDays.holidays
         this.testOpenedDays = this.testDays.workdays
         this.nextMonth = Selector('#app .MuiSvgIcon-root').nth(7);
