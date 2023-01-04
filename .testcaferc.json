@@ -1,0 +1,6 @@
+{
+    "browsers": "chrome",
+    "skipJsErrors": true,
+    "src": "./tests/*.js",
+    "baseUrl": "https://cloud.maitres.com/"
+}
