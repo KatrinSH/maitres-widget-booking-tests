@@ -1,25 +1,37 @@
+import { endOfMonth } from 'date-fns';
 import { Selector } from 'testcafe';
+import { getDates } from '../helpers/getDates';
+
 
 class skepppsbron {
     constructor() {
-        this.testClosedDays = [3, 4, 5, 6, 10]
-        this.testOpenedDays = [7, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31]
+        this.testDays = getDates(new Date(), new Date(endOfMonth(new Date())))
+        this.testClosedDays = this.testDays.holidays
+        this.testOpenedDays = this.testDays.workdays
         this.nextMonth = Selector('#app .MuiSvgIcon-root').nth(7);
         this.expText = Selector('#app h1')
-        this.expButtonHelMenu = Selector('#app button').withText('HEL MENY / FULL MENU (1195 KR)')
-        this.expButtonHalvMenu = Selector('#app button').withText('HALV MENY / HALF MENU (695 KR)')
+        this.ButtonHelMenu = Selector('#app button').withText('HEL MENY / FULL MENU (1195 KR)')
+        this.ButtonHalvMenu = Selector('#app button').withText('HALV MENY / HALF MENU (695 KR)')
+        this.expEmptyTable = Selector('#app button').withText('1')
+        this.backButton = Selector('#app button').withText('TILLBAKA')
+
+        console.log('Closed days', this.testClosedDays);
+        console.log('Opened days', this.testOpenedDays);
+    }
+
+    getDayFromCalendar(dayNumber) {
+        return new RegExp("\\b(" + dayNumber + ")\\b", 'i');
     }
 
     getClosedDaySelector(index) {
-        const onlyNumberClosedDay = new RegExp("\\b(" + this.testClosedDays[index] + ")\\b", 'i');
-       
+        const onlyNumberClosedDay = this.getDayFromCalendar(this.testClosedDays[index]);
 
         return Selector('#app .MuiPickersBasePicker-pickerView .MuiPickersDay-day:not(.MuiPickersDay-dayDisabled) p').withText(onlyNumberClosedDay)
     }
     getOpenedDaySelector(index) {
-    const onlyNumberOpenedDay = new RegExp("\\b(" + this.testOpenedDays[index] + ")\\b", 'i');
-    
-    return Selector('#app .MuiPickersBasePicker-pickerView .MuiPickersDay-day:not(.MuiPickersDay-dayDisabled) p').withText(onlyNumberOpenedDay)
+        const onlyNumberOpenedDay = this.getDayFromCalendar(this.testOpenedDays[index]);
+
+        return Selector('#app .MuiPickersBasePicker-pickerView .MuiPickersDay-day:not(.MuiPickersDay-dayDisabled) p').withText(onlyNumberOpenedDay)
     }
 }
 
