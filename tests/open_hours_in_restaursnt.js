@@ -1,9 +1,12 @@
 import { URL_QUERY_PARAMS } from "../constants";
+import { checkLastDayOfMonth } from "../helpers/checkLastDayOfMonth";
 import skepppsbron from "../page-model/skepppsbron";
 
 fixture`Users`
     .page`./${URL_QUERY_PARAMS}`
 
+
+const addMonth = 0;
 
 for (let index = 0; index < skepppsbron.testClosedDays.length; index++) {
     test(`Check closed days: day - ${skepppsbron.testClosedDays[index]}`, async t => {
@@ -11,8 +14,10 @@ for (let index = 0; index < skepppsbron.testClosedDays.length; index++) {
             .click(skepppsbron.getClosedDaySelector(index))
             .expect((skepppsbron.expText).textContent).eql("Tyvärr finns inga lediga bord önskad dag, kontakta oss för väntlista.")
             .navigateTo(`./${URL_QUERY_PARAMS}`)
-
-
+        if (checkLastDayOfMonth(index)) {
+            await t.click(skepppsbron.nextMonth);
+            addMonth++
+        }
     });
 }
 
@@ -26,5 +31,12 @@ for (let index = 0; index < skepppsbron.testOpenedDays.length; index++) {
             .click(skepppsbron.ButtonHalvMenu)
             .expect((skepppsbron.expEmptyTable).textContent).ok()
             .navigateTo(`./${URL_QUERY_PARAMS}`)
+        if (checkLastDayOfMonth(index) || addMonth > 0) {
+            console.log("Next month");
+            for (let index = 0; index < addMonth; index++) {
+                await t.click(skepppsbron.nextMonth);
+            }
+            addMonth++
+        }
     })
 }
