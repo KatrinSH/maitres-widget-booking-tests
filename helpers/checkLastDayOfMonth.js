@@ -1,11 +1,10 @@
-import { isLastDayOfMonth } from "date-fns";
+import { addMonths, isLastDayOfMonth } from "date-fns";
 
-export function checkLastDayOfMonth(day) {
+export function checkLastDayOfMonth(day, monthPlus) {
     const date = new Date()
     const year = date.getFullYear()
-    const month = date.getMonth() + 1
+    const month = addMonths(new Date(), monthPlus).getMonth()
     const conditional = isLastDayOfMonth(new Date(year, month, day))
-    console.log('Checking last day of month', new Date(year, month, day), conditional);
 
     return conditional
 }

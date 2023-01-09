@@ -1,12 +1,12 @@
-import { addDays, lastDayOfMonth } from 'date-fns';
+import { addDays } from 'date-fns';
 import { Selector } from 'testcafe';
 import { END_OF_DATE_RANGE } from '../constants';
 import { getDates } from '../helpers/getDates';
 
 
-class skepppsbron {
+class WidgetModel {
     constructor() {
-        this.testDays = getDates(addDays(lastDayOfMonth(new Date()), -2), addDays(new Date(), END_OF_DATE_RANGE))
+        this.testDays = getDates(new Date(), addDays(new Date(), END_OF_DATE_RANGE))
         this.testClosedDays = this.testDays.holidays
         this.testOpenedDays = this.testDays.workdays
         this.nextMonth = Selector('#app .MuiSvgIcon-root').nth(7);
@@ -36,4 +36,4 @@ class skepppsbron {
     }
 }
 
-export default new skepppsbron();
+export default new WidgetModel();
